@@ -4,7 +4,7 @@
   "description": "Backend APIs for Password Vault Application",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon -r dotenv/config src/index.ts",
+    "dev": "nodemon -r dotenv/config src/server/index.ts",
     "build": "yarn tsc",
     "clean": "rimraf ./dist",
     "build:clean": "yarn run clean && yarn run build"
