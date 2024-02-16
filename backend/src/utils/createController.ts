@@ -1,3 +1,5 @@
+import { APP_CONSTANTS } from "../config/constants";
+import { encryptResponseData } from "../services/security.service";
 import { ControllerFunction, NextFunction, Request, Response } from "../types"
 
 export const controller = (fn: ControllerFunction) => {
@@ -5,9 +7,11 @@ export const controller = (fn: ControllerFunction) => {
         try {
             const context = createContext(req, res);
             const data = await fn(context);
+            const encryptedData = APP_CONSTANTS.DISABLE_ENCRYPTION
+                ? data.data
+                : encryptResponseData(JSON.stringify(data.data ?? {}));
 
-            // encrypt data
-            return res.send(data)
+            return res.status(data.status || 200).send({ data: encryptedData, error: data.error });
         } catch (err) {
             next(err)
         }

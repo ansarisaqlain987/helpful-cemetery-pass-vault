@@ -1,7 +1,7 @@
-import { AppContext, ControllerFunction } from "../types";
+import { AppContext, AppResponse, ControllerFunction } from "../types";
 
-export const registerUser: ControllerFunction = (ctx: AppContext) => {
+export const registerUser: ControllerFunction = (ctx: AppContext): AppResponse => {
     return {
-        data: "HELO"
+        data: ["HELO"],
     }
 }

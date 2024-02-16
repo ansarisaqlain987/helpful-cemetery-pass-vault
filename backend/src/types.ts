@@ -5,7 +5,7 @@
 import { Request as ExpressRequest, Response as ExpressResponse, NextFunction as ExpressNextFunction, Router as ExpressRouter } from 'express';
 
 export type Request = ExpressRequest;
-export type Response = ExpressResponse;
+export type Response<T = any> = ExpressResponse<T>;
 export type NextFunction = ExpressNextFunction;
 export type Router = ExpressRouter;
 export type AppContext = {
@@ -18,4 +18,9 @@ export type AppContext = {
     cookie: { [key: string]: string },
     setCookie: (name: string, value: any) => void
 };
-export type ControllerFunction = (ctx: AppContext) => object | Promise<object>
+export type AppResponse = {
+    status?: 200 | 201 | 203 | 204 | 400 | 401 | 402 | 403 | 404 | 500;
+    data?: object | Array<any>;
+    error?: Array<any>;
+}
+export type ControllerFunction = (ctx: AppContext) => AppResponse | Promise<AppResponse>
