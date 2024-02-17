@@ -24,3 +24,49 @@ export type AppResponse = {
     error?: Array<any>;
 }
 export type ControllerFunction = (ctx: AppContext) => AppResponse | Promise<AppResponse>
+
+
+
+
+// Schema Types
+export type User = {
+    id?: string;
+    authId: string;
+    email: string;
+    vaultKey: string;
+    lastLogin: string;
+    active: boolean;
+    createdAt?: string;
+    updatedAt?: string;
+}
+
+export type UserDetails = {
+    id?: string;
+    userId: string;
+    firstName: string;
+    lastName: string;
+    alternateEmail: string;
+    contactNumber: string;
+    countryCode: string;
+    createdAt?: string;
+    updatedAt?: string;
+}
+
+export type VaultItem = {
+    id?: string;
+    vaultId: string;
+    name: string;
+    secret: string;
+    active: boolean;
+    createdAt?: string;
+    updatedAt?: string;
+}
+
+export type UserVault = {
+    id?: string;
+    userId: string;
+    name: string;
+    active: boolean;
+    createdAt?: string;
+    updatedAt?: string;
+}

@@ -1,7 +1,7 @@
 
 const getBooleanValue = (key: string | undefined): boolean => {
     try {
-        return Boolean(key);
+        return key?.toLowerCase()?.trim() === "true";
     } catch (err) {
         return false;
     }
