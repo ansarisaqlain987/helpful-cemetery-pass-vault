@@ -2,7 +2,7 @@ import { APP_CONSTANTS } from "../config/constants";
 import { encryptResponseData } from "../services/security.service";
 import { ControllerFunction, NextFunction, Request, Response } from "../types"
 
-export const controller = (fn: ControllerFunction) => {
+export const useController = (fn: ControllerFunction) => {
     return async (req: Request, res: Response, next: NextFunction) => {
         try {
             const context = createContext(req, res);

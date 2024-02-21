@@ -1,4 +1,4 @@
-import crypto, { KeyLike } from 'crypto';
+import crypto from 'crypto';
 export const encryptData = () => { }
 
 export const descryptData = () => { }

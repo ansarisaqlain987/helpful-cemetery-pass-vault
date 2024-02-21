@@ -4,7 +4,7 @@
 
 import { Request as ExpressRequest, Response as ExpressResponse, NextFunction as ExpressNextFunction, Router as ExpressRouter } from 'express';
 
-export type Request = ExpressRequest;
+export type Request = ExpressRequest & { auth?: Auth };
 export type Response<T = any> = ExpressResponse<T>;
 export type NextFunction = ExpressNextFunction;
 export type Router = ExpressRouter;
@@ -25,6 +25,12 @@ export type AppResponse = {
 }
 export type ControllerFunction = (ctx: AppContext) => AppResponse | Promise<AppResponse>
 
+
+
+export type Auth = {
+    email: string;
+    uid: string;
+}
 
 
 
