@@ -1,7 +1,8 @@
 
 import { APP_CONSTANTS } from "../config/constants";
 import { getFirebaseAuth } from "../config/firebase";
-import { AuthObject, NextFunction, Request, Response } from "../types";
+import { decodeToken } from "../services/security.service";
+import { NextFunction, Request, Response, TokenPayload } from "../types";
 
 export const useAuth = async (req: Request, res: Response, next: NextFunction) => {
     const authHeader = req.get('authorization');
@@ -11,22 +12,28 @@ export const useAuth = async (req: Request, res: Response, next: NextFunction) =
         const token = authHeader?.slice(7);
         if (!token) { throw new Error('Invalid Token') }
 
+        const decodedPayload: TokenPayload = decodeToken(token);
+
         authObject = APP_CONSTANTS.LOCAL_DEV ? ({
             email: req.get('x_user_email') ?? 'test@test.com',
-            uid: req.get('x_user_uid') ?? ''
-        }) : (await getAuthObjectFromFirebase(token));
+            uid: req.get('x_user_uid') ?? '',
+            id: decodedPayload.id,
+            fb: decodedPayload.fb
+        }) : (await getAuthObjectFromFirebase(decodedPayload.fb, decodedPayload.id));
 
     } catch (err) {
         return res.status(401).send({ data: null, error: ["Invalid Token"] });
     }
-    req.auth = authObject as AuthObject;
+    req.auth = authObject as TokenPayload;
     next();
 }
 
-const getAuthObjectFromFirebase = async (token: string): Promise<AuthObject> => {
+const getAuthObjectFromFirebase = async (token: string, id: string): Promise<TokenPayload> => {
     const fbRes = await getFirebaseAuth().verifyIdToken(token);
     return {
         email: fbRes?.email ?? '',
         uid: fbRes?.uid,
-    } as AuthObject
+        id,
+        fb: token
+    } as TokenPayload
 }

@@ -1,7 +1,16 @@
 import crypto from 'crypto';
-export const encryptData = () => { }
+import { sign, decode } from 'jsonwebtoken';
+import { APP_CONSTANTS } from '../config/constants';
+import { TokenPayload } from '../types';
+import { AES, enc } from 'crypto-ts';
 
-export const descryptData = () => { }
+export const encryptData = (data: string): string => {
+    return AES.encrypt(data, APP_CONSTANTS.SIGNED_SECRET).toString();
+}
+
+export const decryptData = (encData: string): string => {
+    return AES.decrypt(encData, APP_CONSTANTS.SIGNED_SECRET).toString(enc.Utf8);
+}
 
 export const encryptResponseData = (data: string) => {
     const encryptedData = crypto.publicEncrypt(
@@ -27,3 +36,13 @@ export const decryptRequestData = (encryptedData: string) => {
     );
     return decryptedData.toString("utf-8");
 }
+
+export const createToken = (payload: TokenPayload): string => {
+    const token = sign(payload, APP_CONSTANTS.SECRET);
+    return encryptData(token);
+}
+
+export const decodeToken = (token: string): TokenPayload => {
+    const decToken = decryptData(token);
+    return decode(decToken) as TokenPayload;
+}   

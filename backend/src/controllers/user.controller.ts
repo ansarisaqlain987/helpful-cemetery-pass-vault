@@ -1,6 +1,9 @@
-import { AppContext, AppResponse, ControllerFunction } from "../types";
+import { AppContext, AppResponse, ControllerFunction, TokenPayload } from "../types";
 
-export const registerUser: ControllerFunction = (ctx: AppContext): AppResponse => {
+export const login: ControllerFunction = (ctx: AppContext): AppResponse => {
+
+    const auth: TokenPayload = ctx.request.auth as TokenPayload;
+
     return {
         data: ["HELO"],
     }

@@ -4,16 +4,16 @@
 
 import { Request as ExpressRequest, Response as ExpressResponse, NextFunction as ExpressNextFunction, Router as ExpressRouter } from 'express';
 
-export type Request<Body = any> = ExpressRequest<{ [key: string]: string; } | undefined, null, Body> & { auth?: AuthObject };
+export type Request<Body = any> = ExpressRequest<{ [key: string]: string; } | undefined, null, Body> & { auth?: TokenPayload };
 export type Response<T = any> = ExpressResponse<T>;
 export type NextFunction = ExpressNextFunction;
 export type Router = ExpressRouter;
-export type AppContext = {
-    request: Request;
-    response: Response;
+export type AppContext<TReqBody = any, TResBody = any> = {
+    request: Request<TReqBody>;
+    response: Response<TResBody>;
     query?: { [key: string]: string },
     params?: { [key: string]: string },
-    body?: any,
+    body?: TReqBody,
     headers?: { [key: string]: string },
     cookie: { [key: string]: string },
     setCookie: (name: string, value: any) => void
@@ -25,11 +25,11 @@ export type AppResponse = {
 }
 export type ControllerFunction = (ctx: AppContext) => AppResponse | Promise<AppResponse>
 
-
-
-export type AuthObject = {
+export type TokenPayload = {
     email: string;
     uid: string;
+    id: string;
+    fb: string;
 }
 
 
@@ -37,7 +37,7 @@ export type AuthObject = {
 // Schema Types
 export type User = {
     id?: string;
-    authId: string;
+    uid: string;
     email: string;
     vaultKey: string;
     lastLogin: string;

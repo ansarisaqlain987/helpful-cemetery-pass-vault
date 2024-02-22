@@ -4,7 +4,7 @@ import { User } from "../types";
 const schema = new Schema<User>({
     email: { type: String, required: true, unique: true },
     lastLogin: { type: String, required: false },
-    authId: { type: String, required: true },
+    uid: { type: String, required: true },
     vaultKey: { type: String, required: true },
     active: { type: Boolean, default: true }
 }, {
@@ -17,4 +17,4 @@ schema.virtual('id').get(function () {
 
 schema.set('toJSON', { virtuals: true });
 
-export const UserModel = model('User', schema, 'users');
+export const AuthModel = model('User', schema, 'users');

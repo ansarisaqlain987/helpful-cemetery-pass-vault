@@ -16,4 +16,4 @@ schema.virtual('id').get(function () {
 
 schema.set('toJSON', { virtuals: true });
 
-export const UserModel = model('VaultItem', schema, 'vaultitems');
+export const VaultItemModel = model('VaultItem', schema, 'vaultitems');
