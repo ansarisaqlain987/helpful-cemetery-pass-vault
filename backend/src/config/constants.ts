@@ -16,6 +16,6 @@ const getJsonValue = (data: string | undefined): object | null => {
 }
 
 export const APP_CONSTANTS = {
-    DISABLE_ENCRYPTION: getBooleanValue(process.env.DISABLE_ENCRYPTION),
-    FIREBASE_CREDS: getJsonValue(process.env.FIREBASE_CREDS)
+    FIREBASE_CREDS: getJsonValue(process.env.FIREBASE_CREDS),
+    LOCAL_DEV: getBooleanValue(process.env.LOCAL_DEV)
 }

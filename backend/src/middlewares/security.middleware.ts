@@ -3,13 +3,10 @@ import { decryptRequestData } from "../services/security.service";
 import { NextFunction, Request, Response } from "../types"
 
 export const getSecurityMiddleware = () => {
-    return (req: Request, res: Response, next: NextFunction) => {
-        const disableEncryption = APP_CONSTANTS.DISABLE_ENCRYPTION
-        if (!disableEncryption && req.method !== 'GET') {
-            // decrypt body
-            // re-assign body
-            const body = req.body;
-            const decryptedBody = decryptRequestData(body?.data);
+    return (req: Request<{ data: any }>, res: Response, next: NextFunction) => {
+        const localDev = !(APP_CONSTANTS.LOCAL_DEV)
+        if (!localDev && req.method !== 'GET') {
+            const decryptedBody = decryptRequestData(req?.body?.data);
             req.body = { data: decryptedBody };
         }
         next();
