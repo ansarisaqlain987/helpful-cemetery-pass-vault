@@ -21,6 +21,7 @@ export type AppContext<TReqBody = any, TResBody = any> = {
 export type AppResponse = {
     status?: 200 | 201 | 203 | 204 | 400 | 401 | 402 | 403 | 404 | 500;
     data?: object | Array<any>;
+    errorCode?: number;
     error?: Array<any>;
 }
 export type ControllerFunction = (ctx: AppContext) => AppResponse | Promise<AppResponse>
@@ -35,12 +36,11 @@ export type TokenPayload = {
 
 
 // Schema Types
-export type User = {
+export type UserAuth = {
     id?: string;
     uid: string;
     email: string;
     vaultKey: string;
-    lastLogin: string;
     active: boolean;
     createdAt?: string;
     updatedAt?: string;
@@ -73,6 +73,7 @@ export type UserVault = {
     userId: string;
     name: string;
     active: boolean;
+    items: string[];
     createdAt?: string;
     updatedAt?: string;
 }

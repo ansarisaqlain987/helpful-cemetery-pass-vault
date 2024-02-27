@@ -14,18 +14,15 @@ export const useAuth = async (req: Request, res: Response, next: NextFunction) =
 
         const decodedPayload: TokenPayload = decodeToken(token);
 
-        authObject = APP_CONSTANTS.LOCAL_DEV ? ({
-            email: req.get('x_user_email') ?? 'test@test.com',
-            uid: req.get('x_user_uid') ?? '',
-            id: decodedPayload.id,
-            fb: decodedPayload.fb
-        }) : (await getAuthObjectFromFirebase(decodedPayload.fb, decodedPayload.id));
-
+        req.auth = await getTokenPayloadData(decodedPayload);
+        next();
     } catch (err) {
         return res.status(401).send({ data: null, error: ["Invalid Token"] });
     }
-    req.auth = authObject as TokenPayload;
-    next();
+}
+
+const getTokenPayloadData = async (decodedPayload: TokenPayload): Promise<TokenPayload> => {
+    return APP_CONSTANTS.LOCAL_DEV ? decodedPayload : (await getAuthObjectFromFirebase(decodedPayload.fb, decodedPayload.id));
 }
 
 const getAuthObjectFromFirebase = async (token: string, id: string): Promise<TokenPayload> => {

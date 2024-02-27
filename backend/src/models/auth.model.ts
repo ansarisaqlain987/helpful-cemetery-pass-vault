@@ -1,9 +1,8 @@
 import { Schema, model } from "mongoose";
-import { User } from "../types";
+import { UserAuth } from "../types";
 
-const schema = new Schema<User>({
+const schema = new Schema<UserAuth>({
     email: { type: String, required: true, unique: true },
-    lastLogin: { type: String, required: false },
     uid: { type: String, required: true },
     vaultKey: { type: String, required: true },
     active: { type: Boolean, default: true }
@@ -17,4 +16,4 @@ schema.virtual('id').get(function () {
 
 schema.set('toJSON', { virtuals: true });
 
-export const AuthModel = model('User', schema, 'users');
+export const AuthModel = model('Auth', schema, 'auth');

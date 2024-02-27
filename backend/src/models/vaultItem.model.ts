@@ -1,10 +1,10 @@
 import { Schema, model } from "mongoose";
-import { User, VaultItem } from "../types";
+import { VaultItem } from "../types";
 
 const schema = new Schema<VaultItem>({
     vaultId: { type: String, required: true },
     name: { type: String, required: true },
-    secret: { type: String, required: true },
+    secret: { type: String, required: true }, // structure of secret will be defined at the frontend
     active: { type: Boolean, default: true }
 }, {
     timestamps: true
