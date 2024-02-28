@@ -3,17 +3,25 @@ import { getFirebaseAuth } from "../config/firebase";
 import { createToken } from "../services/security.service";
 import { UserService } from "../services/user.service";
 import { VaultService } from "../services/vault.service";
-import { AppContext, AppResponse, ControllerFunction, TokenPayload } from "../types";
+import { AppContext, AppResponse, ControllerFunction, TokenPayload, UserDetails } from "../types";
+import { sanitizeObject } from "../utils/sanity.util";
 
 interface loginBody {
     data: {
         token: string;
     }
 }
-export const login: ControllerFunction = async (ctx: AppContext): Promise<AppResponse> => {
+const login: ControllerFunction = async (ctx: AppContext): Promise<AppResponse> => {
 
     const requestBody = ctx.body as loginBody;
     const fbToken = requestBody?.data?.token
+    if (!fbToken) {
+        return {
+            status: 400,
+            errorCode: ERROR_CODES.missingFirebaseToken,
+            error: ['Missing firebase token from the body']
+        }
+    }
     const fbResponse = await getFirebaseAuth().verifyIdToken(fbToken);
 
     const uid = fbResponse?.uid ?? '';
@@ -91,4 +99,27 @@ export const login: ControllerFunction = async (ctx: AppContext): Promise<AppRes
             token: token,
         }
     }
+}
+
+const updateUser: ControllerFunction = async (ctx: AppContext<Partial<UserDetails>>): Promise<AppResponse> => {
+    const body = ctx.body as Partial<UserDetails>;
+    const obj = sanitizeObject(body);
+    const doc = await UserService.updateUserDetails('', obj);
+    return {
+        status: 200,
+        data: {
+            userDetails: {
+                firstName: doc?.firstName,
+                lastName: doc?.lastName,
+                alternateEmail: doc?.alternateEmail,
+                countryCode: doc?.countryCode,
+                contactNumber: doc?.contactNumber
+            }
+        }
+    }
+}
+
+export default {
+    login,
+    updateUser
 }
