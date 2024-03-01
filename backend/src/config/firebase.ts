@@ -1,4 +1,4 @@
-import { initializeApp, Credential } from 'firebase-admin/app';
+import { initializeApp, cert, ServiceAccount } from 'firebase-admin/app';
 import { getAuth } from 'firebase-admin/auth'
 import { APP_CONSTANTS } from './constants';
 
@@ -9,7 +9,7 @@ if (!serviceAccount) {
     process.exit(0)
 }
 const admin = initializeApp({
-    credential: serviceAccount as Credential
+    credential: cert(serviceAccount as ServiceAccount)
 })
 
 export const getFirebaseApp = () => admin;

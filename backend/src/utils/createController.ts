@@ -7,7 +7,7 @@ export const useController = (fn: ControllerFunction) => {
         try {
             const context = createContext(req, res);
             const data = await fn(context);
-            const encryptedData = !APP_CONSTANTS.LOCAL_DEV
+            const encryptedData = APP_CONSTANTS.LOCAL_DEV
                 ? data.data
                 : encryptResponseData(JSON.stringify(data.data ?? {}));
 
