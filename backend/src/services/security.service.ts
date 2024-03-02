@@ -1,7 +1,6 @@
 import crypto from 'crypto';
 import { sign, decode } from 'jsonwebtoken';
 import { APP_CONSTANTS } from '../config/constants';
-import { TokenPayload } from '../types';
 import { AES, enc } from 'crypto-ts';
 
 export const encryptData = (data: string): string => {
@@ -37,12 +36,12 @@ export const decryptRequestData = (encryptedData: string) => {
     return decryptedData.toString("utf-8");
 }
 
-export const createToken = (payload: TokenPayload): string => {
+export const createToken = (payload: object): string => {
     const token = sign(payload, APP_CONSTANTS.SECRET);
     return encryptData(token);
 }
 
-export const decodeToken = (token: string): TokenPayload => {
+export const decodeToken = (token: string): object => {
     const decToken = decryptData(token);
-    return decode(decToken) as TokenPayload;
+    return decode(decToken) as object;
 }   

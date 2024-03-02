@@ -5,4 +5,5 @@ export const APP_CONSTANTS = {
     LOCAL_DEV: getBooleanValue(process.env.LOCAL_DEV),
     SECRET: getStringValue(process.env.SECRET),
     SIGNED_SECRET: getStringValue(process.env.SIGNED_SECRET),
+    CLERK_SECRET: getStringValue(process.env.CLERK_SECRET)
 }

@@ -4,7 +4,7 @@
 
 import { Request as ExpressRequest, Response as ExpressResponse, NextFunction as ExpressNextFunction, Router as ExpressRouter } from 'express';
 
-export type Request<Body = any> = ExpressRequest<{ [key: string]: string; } | undefined, null, Body> & { auth?: TokenPayload };
+export type Request<Body = any> = ExpressRequest<{ [key: string]: string; } | undefined, null, Body>;
 export type Response<T = any> = ExpressResponse<T>;
 export type NextFunction = ExpressNextFunction;
 export type Router = ExpressRouter;
@@ -25,15 +25,6 @@ export type AppResponse = {
     error?: Array<any>;
 }
 export type ControllerFunction = (ctx: AppContext) => AppResponse | Promise<AppResponse>
-
-export type TokenPayload = {
-    email: string;
-    uid: string;
-    id: string;
-    fb: string;
-}
-
-
 
 // Schema Types
 export type UserAuth = {
