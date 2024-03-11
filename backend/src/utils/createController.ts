@@ -1,9 +1,9 @@
 import { APP_CONSTANTS } from "../config/constants";
 import { encryptResponseData } from "../services/security.service";
-import { ControllerFunction, NextFunction, Request, Response, WithAuth } from "../types"
+import { Auth, ControllerFunction, NextFunction, Request, Response, WithAuth } from "../types"
 
 export const useController = (fn: ControllerFunction) => {
-    return async (req: WithAuth<Request>, res: Response, next: NextFunction) => {
+    return async (req: Request & {auth?: Auth}, res: Response, next: NextFunction) => {
         try {
             const context = createContext(req, res);
             const data = await fn(context);
@@ -18,9 +18,9 @@ export const useController = (fn: ControllerFunction) => {
     }
 }
 
-export const createContext = (req: WithAuth<Request>, res: Response) => {
+export const createContext = (req: Request & any, res: Response) => {
     const context = {
-        auth: req?.auth ?? null,
+        auth: req?.auth?.claims ?? null,
         request: req,
         response: res,
         query: req.query as { [key: string]: string },

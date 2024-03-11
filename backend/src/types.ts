@@ -14,7 +14,7 @@ export type Auth = {
     email: string;
 }
 export type AppContext<TReqBody = any, TResBody = any> = {
-    auth?: Auth;
+    auth?: Auth | null;
     request: Request<TReqBody>;
     response: Response<TResBody>;
     query?: { [key: string]: string },
