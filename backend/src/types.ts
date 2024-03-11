@@ -6,9 +6,15 @@ import { Request as ExpressRequest, Response as ExpressResponse, NextFunction as
 
 export type Request<Body = any> = ExpressRequest<{ [key: string]: string; } | undefined, null, Body>;
 export type Response<T = any> = ExpressResponse<T>;
+export type WithAuth<T=Request> = T & {auth: Auth}
 export type NextFunction = ExpressNextFunction;
 export type Router = ExpressRouter;
+export type Auth = {
+    uid: string;
+    email: string;
+}
 export type AppContext<TReqBody = any, TResBody = any> = {
+    auth?: Auth;
     request: Request<TReqBody>;
     response: Response<TResBody>;
     query?: { [key: string]: string },

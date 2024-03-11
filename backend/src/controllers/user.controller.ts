@@ -2,16 +2,11 @@ import { ERROR_CODES } from "../config/errorCodes";
 import { UserService } from "../services/user.service";
 import { VaultService } from "../services/vault.service";
 import { AppContext, AppResponse, ControllerFunction, UserDetails } from "../types";
-import { sanitizeObject } from "../utils/sanity.util";
+import { validateObject } from "../utils/sanity.util";
+import { UpdateUserInput, UpdateUserSchema } from "../zod/schema";
 
-interface LoginProps {
-    uid: string;
-    email: string;
-}
-const login: ControllerFunction = async (ctx: AppContext<LoginProps>): Promise<AppResponse> => {
-
-    const uid = ctx.body?.uid ?? '';
-    const email = ctx.body?.email ?? '';
+const login: ControllerFunction = async (ctx: AppContext): Promise<AppResponse> => {
+    const {email = '', uid = ''} = ctx.auth ?? {};
     const user = await UserService.getUserByFilter({ email, uid });
 
     const data: { userDetails: object, key: string, vaults: any[], } = {
@@ -76,9 +71,12 @@ const login: ControllerFunction = async (ctx: AppContext<LoginProps>): Promise<A
     }
 }
 
-const updateUser: ControllerFunction = async (ctx: AppContext<Partial<UserDetails>>): Promise<AppResponse> => {
+const updateUser: ControllerFunction = async (ctx: AppContext<UpdateUserInput>): Promise<AppResponse> => {
     const body = ctx.body as Partial<UserDetails>;
-    const obj = sanitizeObject(body);
+    const {success, error, data: obj} = validateObject(UpdateUserSchema, body);
+    if(!success){
+        return {status: 400, error: error, errorCode: 400}
+    }
     const doc = await UserService.updateUserDetails('', obj);
     return {
         status: 200,
