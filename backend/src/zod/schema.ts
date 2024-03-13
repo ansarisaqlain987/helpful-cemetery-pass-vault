@@ -6,6 +6,7 @@ export const UpdateUserSchema = z.object({
     alternateEmail: z.string().optional(),
     countryCode: z.string().optional(),
     contactNumber: z.string().optional(),
+    test: z.string(),
 })
 
 export type UpdateUserInput = z.infer<typeof UpdateUserSchema>

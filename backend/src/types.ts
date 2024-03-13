@@ -4,6 +4,7 @@
 
 import { Request as ExpressRequest, Response as ExpressResponse, NextFunction as ExpressNextFunction, Router as ExpressRouter } from 'express';
 
+export type Nullable<T> = T | null
 export type Request<Body = any> = ExpressRequest<{ [key: string]: string; } | undefined, null, Body>;
 export type Response<T = any> = ExpressResponse<T>;
 export type WithAuth<T=Request> = T & {auth: Auth}
@@ -13,6 +14,7 @@ export type Auth = {
     uid: string;
     email: string;
 }
+export type HTTPStatus = 200 | 201 | 203 | 204 | 400 | 401 | 402 | 403 | 404 | 500;
 export type AppContext<TReqBody = any, TResBody = any> = {
     auth?: Auth | null;
     request: Request<TReqBody>;
@@ -25,27 +27,18 @@ export type AppContext<TReqBody = any, TResBody = any> = {
     setCookie: (name: string, value: any) => void
 };
 export type AppResponse = {
-    status?: 200 | 201 | 203 | 204 | 400 | 401 | 402 | 403 | 404 | 500;
+    status?: HTTPStatus
     data?: object | Array<any>;
-    errorCode?: number;
     error?: Array<any>;
 }
 export type ControllerFunction = (ctx: AppContext) => AppResponse | Promise<AppResponse>
 
-// Schema Types
-export type UserAuth = {
+export type UserDetails = {
     id?: string;
     uid: string;
     email: string;
     vaultKey: string;
     active: boolean;
-    createdAt?: string;
-    updatedAt?: string;
-}
-
-export type UserDetails = {
-    id?: string;
-    userId: string;
     firstName: string;
     lastName: string;
     alternateEmail: string;
@@ -67,7 +60,7 @@ export type VaultItem = {
 
 export type UserVault = {
     id?: string;
-    userId: string;
+    uid: string;
     name: string;
     active: boolean;
     items: string[];
