@@ -3,6 +3,7 @@
  */
 
 import { Request as ExpressRequest, Response as ExpressResponse, NextFunction as ExpressNextFunction, Router as ExpressRouter } from 'express';
+import { Schema } from 'mongoose';
 
 export type Nullable<T> = T | null
 export type Request<Body = any> = ExpressRequest<{ [key: string]: string; } | undefined, null, Body>;
@@ -30,6 +31,7 @@ export type AppResponse = {
     status?: HTTPStatus
     data?: object | Array<any>;
     error?: Array<any>;
+    errorCode?: number;
 }
 export type ControllerFunction = (ctx: AppContext) => AppResponse | Promise<AppResponse>
 
@@ -50,7 +52,6 @@ export type UserDetails = {
 
 export type VaultItem = {
     id?: string;
-    vaultId: string;
     name: string;
     secret: string;
     active: boolean;
@@ -60,7 +61,7 @@ export type VaultItem = {
 
 export type UserVault = {
     id?: string;
-    uid: string;
+    uid: Schema.Types.ObjectId;
     name: string;
     active: boolean;
     items: string[];

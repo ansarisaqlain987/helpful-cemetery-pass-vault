@@ -15,7 +15,22 @@ const createVault = async (uid: string, vaultName: string = 'default') => {
     return await saveAndGetJsonValue<UserVault>(doc);
 }
 
+const updateVault = async (id: string, data: any, selectFields?: {[key in keyof Partial<UserVault>]: number}) => {
+    const doc = await VaultModel.findByIdAndUpdate( id, data, {new: true}).select(selectFields ?? {});
+    return doc?.toJSON();
+}
+
+const getVaultById = (id: string, selectFields?: {[key in keyof Partial<UserVault>]: number}) => {
+    const query = VaultModel.findById(id);
+    if(selectFields){
+        query.select(selectFields)
+    }
+    return query.exec();
+}
+
 export const VaultService = {
     getVaultsByUserId,
-    createVault
+    createVault,
+    getVaultById,
+    updateVault
 }

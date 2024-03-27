@@ -8,7 +8,6 @@ export const UserRoutes = (router: Router) => {
     router.post('/login', useController(UserController.login));
     router.post('/update', useController(UserController.updateUser));
     router.get('/', (req, res) => {
-        console.log(req.headers);
         return res.send({ "data": "here" })
     });
 

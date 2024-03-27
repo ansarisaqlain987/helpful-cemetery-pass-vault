@@ -20,7 +20,6 @@ const login: ControllerFunction = async (ctx: AppContext): Promise<AppResponse> 
         
         const userDetails = user;
         const vaults = await VaultService.getVaultsByUserId(user.id ?? '', { id: 1, name: 1, active: 1, items: 1 });
-        console.log('\n\n\nHERE\n\n\n', vaults)
         status = 200
         response = {
             key: user.vaultKey,

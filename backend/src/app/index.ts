@@ -4,13 +4,16 @@ import { defaultExceptionHandler, notFoundRoute } from "../routes";
 import { useClerkAuth } from "../middlewares/clerk.middleware";
 import { VaultRoutes } from "../routes/vault.route";
 import { connectToDB } from "../config/db";
+import { getSecurityMiddleware } from "../middlewares/security.middleware";
+import morgan from "morgan";
 
 const app: Express = express();
 
+app.use(morgan('dev'))
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(useClerkAuth());
-// app.use(getSecurityMiddleware);
+app.use(getSecurityMiddleware());
 
 connectToDB();
 // setup routes

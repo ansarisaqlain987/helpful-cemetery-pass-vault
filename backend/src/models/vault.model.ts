@@ -1,11 +1,26 @@
 import { Schema, model } from "mongoose";
-import { UserVault } from "../types";
+import { UserVault, VaultItem } from "../types";
+
+
+const itemSchema = new Schema<VaultItem>({
+    name: { type: String, required: true },
+    secret: { type: String, required: true },
+    active: { type: Boolean, default: true }
+}, {
+    timestamps: true
+});
+
+itemSchema.virtual('id').get(function () {
+    return this._id.toString();
+});
+
+itemSchema.set('toJSON', { virtuals: true });
 
 const schema = new Schema<UserVault>({
-    uid: { type: String, required: true },
+    uid: { type: Schema.Types.ObjectId, ref: 'UserDetail', required: true },
     name: { type: String, required: true },
     active: { type: Boolean, default: true },
-    items: [{ type: String }],
+    items: [itemSchema],
 }, {
     timestamps: true
 });

@@ -1,4 +1,5 @@
 import { Document } from "mongoose";
+import {z} from 'zod';
 
 export const sanitizeObject = (input: { [key: string]: string }): { [key: string]: string } => {
     const keys = Object.keys(input);
@@ -16,7 +17,7 @@ export const saveAndGetJsonValue = async <T = any>(doc: Document<unknown, {}, T>
     return d.toJSON();
 }
 
-export const validateObject = (schema: any, data: any) => {
+export const validateObject = <T=any>(schema: any, data: any) => {
     const valid = schema.safeParse(data);
-    return {success: valid.success, error: valid?.error?.issues, data: valid.data}
+    return {success: valid.success, error: valid?.error?.issues, data: valid.data as T}
 }

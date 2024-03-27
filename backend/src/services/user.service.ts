@@ -23,9 +23,14 @@ const updateUserDetails = async (userid: string, inputs: Partial<UserDetails>) =
     return doc?.toJSON();
 }
 
+const getUserFromUID = async (uid: string) => {
+    return (await UserModel.findOne({uid}))?.toJSON()
+}
+
 export const UserService = {
     getUserFullDetailsById,
     addUserDetails,
     updateUserDetails,
-    getUserByFilter
+    getUserByFilter,
+    getUserFromUID
 }
