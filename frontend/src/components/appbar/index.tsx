@@ -41,9 +41,9 @@ ListItem.displayName = "ListItem"
 
 export const AppBar: FC = () => {
     const { signIn } = useSignIn();
-
+    
     const onLoginButtonClick = async () => {
-        await signIn?.authenticateWithRedirect({ strategy: 'oauth_google', redirectUrl: '/', redirectUrlComplete: '/' });
+        await signIn?.authenticateWithRedirect({ strategy: 'oauth_google', redirectUrl: '/', redirectUrlComplete: window.location.pathname ?? '/' });
     }
     return (
         <Container>
@@ -74,7 +74,6 @@ export const AppBar: FC = () => {
                                         <SignOutButton><ListItem
                                             key={'Logout'}
                                             title={'Logout'}
-                                            href={'/'}
                                         />
                                         </SignOutButton>
                                     </ul>

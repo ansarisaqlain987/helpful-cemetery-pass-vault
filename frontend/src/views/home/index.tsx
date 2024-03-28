@@ -1,119 +1,14 @@
 import { Container } from "@/components/container"
 import { Button } from "@/components/ui/button"
 import { FC } from "react"
-import { FaCheck } from "react-icons/fa";
+import { FeatureComponent } from "./feature";
+import { PricingCard } from "./pricing";
+import { SingleQuestion } from "./question";
+import { data } from "@/lib/data";
+import { FaLinkedin, FaGithub } from "react-icons/fa";
 
-type Feature = { title: string, description: string }
-const features: Feature[] = [
-    {
-        title: "Secure Password Storage",
-        description: "Safely store all your passwords in one place with top-notch security measures."
-    },
-    {
-        title: "Password Generator",
-        description: "Create strong and unique passwords with our built-in password generator tool."
-    },
-    {
-        title: "Easy Access Anywhere",
-        description: "Access your passwords anytime, anywhere, from any device with internet connectivity."
-    },
-    {
-        title: "Auto-fill Login Credentials",
-        description: "Effortlessly log in to your accounts with auto-fill feature for login credentials."
-    }
-]
-const FeatureComponent: FC<{ feature: Feature }> = ({ feature }) => {
-    return (
-        <div className='mx-5 my-4 bg-[#716B80] py-5'>
-            <div className="text-2xl font-bold">{feature.title}</div>
-            <div>{feature.description}</div>
-        </div>
-    )
-}
+const { features, questions, pricingModels } = data
 
-
-
-type Pricing = {
-    plan: string;
-    description: string;
-    monthlyPrice: number;
-    yearlyPrice: number;
-    features: string[]
-
-}
-const pricingModels: Pricing[] = [
-    {
-        plan: 'free',
-        description: 'Ideal for personal use',
-        monthlyPrice: 0,
-        yearlyPrice: 0,
-        features: [
-            'Unlimited password storage',
-            'Basic security measures',
-            'Limited customer support',
-            'Ads supported'
-        ]
-    }, {
-        plan: 'basic',
-        description: 'Great for small businesses',
-        monthlyPrice: 5,
-        yearlyPrice: 50,
-        features: [
-            'All features of FREE plan',
-            'Unlimited password storage',
-            'Enhanced security features',
-            'Priority customer support',
-            'No ads'
-        ]
-    }, {
-        plan: 'pro',
-        description: 'Perfect for enterprises',
-        monthlyPrice: 10,
-        yearlyPrice: 100,
-        features: [
-            'All features of BASIC plan',
-            'Unlimited password storage',
-            'Advanced security protocols',
-            '24/7 dedicated customer support',
-            'Custom branding options'
-        ]
-    },
-
-]
-const PriceSubsciprtion: FC<{ currency: string, amount: number, postfix: string, size: 'lg' | 'sm' }> = (
-    { currency, postfix, amount, size }
-) => {
-    if (size === 'lg') {
-        return <div className="flex flex-row gap-[0.5] font-bold items-end">
-            <div className="text-xl ">{currency}</div>
-            <div className="text-5xl">{amount}</div>
-            <div className="text-3xl px-1">{postfix}</div>
-        </div>
-    }
-
-    return <div className="flex flex-row gap-[0.5] font-semibold items-end">
-        <div className="text-xl ">{currency}</div>
-        <div className="text-xl">{amount}</div>
-        <div className="text-xl px-1">{postfix}</div>
-    </div>
-
-}
-const PricingCard: FC<{ details: Pricing, default?: boolean }> = ({ details, default: defaultPlan }) => {
-    return (
-        <div className='bg-[#E6EBE0] min-h-[200px] py-4 text-left px-8 flex flex-col'>
-            <div className="mt-4 text-2xl uppercase font-bold">{details.plan}</div>
-            <div className="mt-2">{details.description}</div>
-            <div className="mt-8"><PriceSubsciprtion amount={details.monthlyPrice} currency="$" postfix="/ month" size="lg" /></div>
-            <div className=""><PriceSubsciprtion amount={details.yearlyPrice} currency="$" postfix="/ year" size="sm" /></div>
-            <div className="mt-8 flex-1">
-                {details.features.map((f) => <div className="my-3 flex gap-2 items-center"><FaCheck className='h-[100%]' />{f}</div>)}
-            </div>
-            <div className='mt-8 mb-4'>
-                {defaultPlan ? (<Button className="w-[100%]" disabled variant={'outline'}>Current Plan</Button>) : (<Button className="w-[100%]" disabled>Coming Soon</Button>)}
-            </div>
-        </div>
-    )
-}
 export const Home: FC = () => {
     return (
         <>
@@ -159,6 +54,45 @@ export const Home: FC = () => {
                                 })
                             }
                         </div>
+                    </div>
+                </Container>
+            </div>
+
+            <div>
+                <Container>
+                    <div className="mt-24 py-8 text-center">
+                        <div className="text-4xl my-4">Effortlessly Manage Your Passwords</div>
+                        <div className="text-lg my-2">Our password storage solution offers top-notch security features to keep your sensitive information safe. Say goodbye to forgotten passwords and insecure methods of storing them. With our platform, you can access your passwords anytime, anywhere, with peace of mind.</div>
+                        <div className="text-center my-8 flex justify-center gap-4 mb-24">
+                            <Button>Lean More</Button>
+                        </div>
+                    </div>
+                </Container>
+            </div>
+
+            <div className='bg-extra text-white py-14'>
+                <Container>
+                    <div className="grid xs:grid-cols-1 md:grid-cols-3 gap-4 mx-2">
+                        <div>
+                            <div className="text-sm mb-2">FAQ</div>
+                            <div className="text-4xl mb-4">Common Questions</div>
+                            <div className="text-xl">Here are some of the most common questions that we get.</div>
+                        </div>
+                        <div className='col-span-2'>
+                            {
+                                questions.map((q) => <SingleQuestion data={q} />)
+                            }
+                        </div>
+                    </div>
+                </Container>
+            </div>
+
+            <div  className="my-8">
+                <Container>
+                    <div className="flex gap-6">
+                        <div className="flex-1 text-xl">Product By: <span className="font-bold">Saqlain Ansari</span></div>
+                        <div className="text-3xl" ><FaGithub /></div>
+                        <div className="text-3xl"><FaLinkedin /></div>
                     </div>
                 </Container>
             </div>
